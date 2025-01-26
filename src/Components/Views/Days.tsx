@@ -30,7 +30,7 @@ const Days = ({ start }: IDaysProps) => {
 					const month = getFormattedDate(current, { month: "long" })
 					const year = getFormattedDate(current, { year: "numeric" })
 					return (
-						<span
+						<button
 							key={index}
 							className={`hover:bg-gray-100 dark:hover:bg-gray-600 block flex-1 leading-9 border-0 rounded-lg cursor-pointer text-center  dark:text-white font-semibold text-sm ${
 								showSelectedDate && selectedDate.getTime() > 0 && getFormattedDate(selectedDate) === getFormattedDate(current)
@@ -49,7 +49,7 @@ const Days = ({ start }: IDaysProps) => {
 							}}
 						>
 							{day}
-						</span>
+						</button>
 					)
 				})}
 			</div>

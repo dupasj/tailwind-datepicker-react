@@ -32,28 +32,37 @@ const Days = ({ start }: IDaysProps) => {
 
 					const isDisable =  !changeSelectedDate("check-availability", new Date(current));
 
+					if (isDisable){
+						return (
+							<button
+								key={index}
+								className={twMerge("hover:bg-gray-100 dark:hover:bg-gray-600 block flex-1 border-0 rounded-lg cursor-pointer text-center dark:text-white font-semibold text-sm leading-9 text-gray-500",options?.theme?.disabledText)}
+							>{day}</button>
+						)
+					}
+
+					const isSelected = showSelectedDate && selectedDate.getTime() > 0 && getFormattedDate(selectedDate) === getFormattedDate(current);
+					if (isSelected){
+						return (
+							<button
+								key={index}
+								disabled={true}
+								onClick={() => {
+									changeSelectedDate("date", new Date(current))
+								}}
+								className={twMerge("hover:bg-gray-100 dark:hover:bg-gray-600 block flex-1 border-0 rounded-lg cursor-pointer text-center dark:text-white font-semibold text-sm text-gray-900 leading-9",options?.theme?.selected)}
+							>{day}</button>
+						)
+					}
+
 					return (
 						<button
-							key={index}
-							disabled={isDisable}
-							className={`hover:bg-gray-100 dark:hover:bg-gray-600 block flex-1 leading-9 border-0 rounded-lg cursor-pointer text-center  dark:text-white font-semibold text-sm ${
-								showSelectedDate && selectedDate.getTime() > 0 && getFormattedDate(selectedDate) === getFormattedDate(current)
-									? twMerge("bg-blue-700 text-white hover:bg-blue-600", options?.theme?.selected)
-									: ""
-							} ${
-								month == getFormattedDate(selectedDate, { month: "long" }) && year == getFormattedDate(selectedDate, { year: "numeric" })
-									? twMerge("text-gray-900", options?.theme?.text)
-									: twMerge("text-gray-500", options?.theme?.disabledText)
-							} ${(options?.minDate && new Date(current) < options?.minDate) || (options?.disabledDates && options.disabledDates.indexOf(new Date(current)) >= 0) ? twMerge("text-gray-500", options?.theme?.disabledText) : ""} ${
-								(options?.maxDate && new Date(current) > options?.maxDate) || (options?.disabledDates && options.disabledDates.indexOf(new Date(current)) >= 0) ? twMerge("text-gray-500", options?.theme?.disabledText) : ""
-							}
-                            `}
 							onClick={() => {
 								changeSelectedDate("date", new Date(current))
 							}}
-						>
-							{day}
-						</button>
+							key={index}
+							className={twMerge("hover:bg-gray-100 dark:hover:bg-gray-600 block flex-1 border-0 rounded-lg cursor-pointer text-center dark:text-white font-semibold text-sm text-gray-900 leading-9",options?.theme?.text)}
+						>{day}</button>
 					)
 				})}
 			</div>

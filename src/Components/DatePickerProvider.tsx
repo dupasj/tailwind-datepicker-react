@@ -10,7 +10,7 @@ interface IDatePickerContext {
 	show: boolean
 	setShow: (show: boolean) => void
 	selectedDate: Date
-	changeSelectedDate: (action: "prev" | "next" | "date" | "today", date: Date) => void
+	changeSelectedDate: (action: "prev" | "next" | "date" | "today" | "check-availability", date: Date) => boolean
 	showSelectedDate: boolean
 	setShowSelectedDate: Dispatch<SetStateAction<boolean>>
 	selectedMonth: number
@@ -27,7 +27,7 @@ export const DatePickerContext = createContext<IDatePickerContext>({
 	show: false,
 	setShow: () => {},
 	selectedDate: new Date(),
-	changeSelectedDate: () => {},
+	changeSelectedDate: () => true,
 	showSelectedDate: true,
 	setShowSelectedDate: () => {},
 	selectedMonth: 0,
@@ -53,16 +53,22 @@ const DatePickerProvider = ({ children, options: customOptions, onChange, show, 
 	const selectedMonth = selectedDate.getMonth()
 	const selectedYear = selectedDate.getFullYear()
 
-	const changeSelectedDate = (action: "prev" | "next" | "date" | "today", date: Date) => {
-		if (options?.maxDate && date > options.maxDate) return
-		if (options?.minDate && date < options.minDate) return
-		if (options?.disabledDates && options.disabledDates.indexOf(date) >= 0) return
+	const changeSelectedDate = (action: "prev" | "next" | "date" | "today" | "check-availability", date: Date): boolean => {
+		if (options?.maxDate && date > options.maxDate) return false
+		if (options?.minDate && date < options.minDate) return false
+		if (options?.disabledDates && options.disabledDates.indexOf(date) >= 0) return false
+
+		if (action === "check-availability"){
+			return true;
+		}
+
 		setSelectedDate(date)
 		setShowSelectedDate(true)
 		if (options?.autoHide && view === "days" && action === "date") setShow(false)
 		if (onChange) onChange(date)
-	}
 
+		return true;
+	}
 	const getFormattedDate = (date: Date | number, formatOptions?: Intl.DateTimeFormatOptions | undefined | null) => formatDate(options?.language ? options?.language : "en", date, formatOptions)
 
 	return (

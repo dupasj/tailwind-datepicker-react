@@ -29,9 +29,13 @@ const Days = ({ start }: IDaysProps) => {
 					const day = getFormattedDate(current, { day: "numeric" })
 					const month = getFormattedDate(current, { month: "long" })
 					const year = getFormattedDate(current, { year: "numeric" })
+
+					const isDisable =  !changeSelectedDate("check-availability", new Date(current));
+
 					return (
 						<button
 							key={index}
+							disabled={isDisable}
 							className={`hover:bg-gray-100 dark:hover:bg-gray-600 block flex-1 leading-9 border-0 rounded-lg cursor-pointer text-center  dark:text-white font-semibold text-sm ${
 								showSelectedDate && selectedDate.getTime() > 0 && getFormattedDate(selectedDate) === getFormattedDate(current)
 									? twMerge("bg-blue-700 text-white hover:bg-blue-600", options?.theme?.selected)

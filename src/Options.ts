@@ -18,7 +18,7 @@ interface IIcons {
 }
 
 export interface IOptions {
-	anchor: "left"|"right"|"auto",
+	anchor?: "left"|"right"|"auto",
 	title?: string
 	autoHide?: boolean
 	todayBtn?: boolean
